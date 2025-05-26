@@ -8,12 +8,12 @@ const navigations = [
 
 export default function Header() {
   return (
-    <header>
+    <header className="flex gap-[10px]">
       {navigations.map(nav => (
         <NavLink
-          to="/"
+          to={nav.to}
           className={({ isActive }) => (isActive ? 'text-red-500' : '')}>
-          Home
+          {nav.label}
         </NavLink>
       ))}
     </header>

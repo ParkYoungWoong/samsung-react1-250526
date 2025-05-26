@@ -36,6 +36,14 @@ export const useMovieStore = create(
           set({
             movies: Search
           })
+        },
+        fetchMovieDetails: async (movieId?: string) => {
+          if (!movieId) return
+          const res = await fetch(
+            `https://omdbapi.com?apikey=7035c60c&i=${movieId}`
+          )
+          const movie = await res.json()
+          console.log(movie)
         }
       }
     }
