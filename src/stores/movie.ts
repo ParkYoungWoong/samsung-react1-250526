@@ -20,7 +20,7 @@ export const useMovieStore = create(
       searchText: '',
       movies: [] as Movie[]
     },
-    set => {
+    (set, get) => {
       return {
         setSearchText: (newText: string) => {
           set({
@@ -28,8 +28,9 @@ export const useMovieStore = create(
           })
         },
         fetchMovies: async () => {
+          const { searchText } = get()
           const res = await fetch(
-            'https://omdbapi.com?apikey=7035c60c&s=batman'
+            `https://omdbapi.com?apikey=7035c60c&s=${searchText}`
           )
           const { Search } = await res.json()
           set({

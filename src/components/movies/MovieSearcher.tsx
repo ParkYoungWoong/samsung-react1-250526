@@ -1,13 +1,17 @@
 import { useMovieStore } from '@/stores/movie'
 
-// 훅(Hook) 함수, 컴포넌트 함수 안에서 사용!
-
 export default function MovieSearcher() {
   const fetchMovies = useMovieStore(state => state.fetchMovies)
+  const searchText = useMovieStore(state => state.searchText)
+  const setSearchText = useMovieStore(state => state.setSearchText)
+
   return (
     <div>
       <input
+        value={searchText}
+        onChange={event => setSearchText(event.target.value)}
         onKeyDown={event => {
+          if (event.nativeEvent.isComposing) return
           if (event.key === 'Enter') {
             fetchMovies()
           }

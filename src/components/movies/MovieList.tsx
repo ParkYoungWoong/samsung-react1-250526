@@ -6,7 +6,15 @@ export default function MovieList() {
     <div>
       <ul>
         {movies.map(movie => (
-          <li key={movie.imdbID}>{movie.Title}</li>
+          <li key={movie.imdbID}>
+            {movie.Title} ({movie.Year})
+            <img
+              src={movie.Poster}
+              alt={movie.Title}
+              width={100}
+              height={150}
+            />
+          </li>
         ))}
       </ul>
     </div>
