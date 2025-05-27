@@ -15,10 +15,6 @@ export default function MovieDetails() {
   }, [movieId])
 
   async function init() {
-    // 함수 실행
-    // ...
-    // console.log()
-    // ...
     await fetchMovieDetails(movieId)
     setIsLoading(false)
   }
@@ -76,29 +72,3 @@ function MovieInfo({
     </div>
   )
 }
-
-// function fetchMovie() {
-//   return new Promise((resolve, reject) => {
-//     if (유효하다) {
-//       setTimeout(() => {
-//         resolve(123)
-//       }, 2000)
-//       return
-//     }
-//     reject(new Error('유효하지 않다'))
-//     console.log('reject!!')
-//   })
-// }
-// async function fetchMovie() {
-//   if (유효하다) {
-//     return 123
-//   }
-//   throw new Error('유효하지 않다')
-// }
-
-// try {
-//   const res = await fetchMovie()
-//   console.log(res) // 123
-// } catch (error) {
-//   console.error(error)
-// }

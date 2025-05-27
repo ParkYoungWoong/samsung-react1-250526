@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { combine } from 'zustand/middleware'
-import { delay } from '@/utils'
+// import { delay } from '@/utils'
 
 export interface ResponseValue {
   Search: Movie[]
@@ -79,7 +79,7 @@ export const useMovieStore = create(
         },
         fetchMovieDetails: async (movieId?: string) => {
           if (!movieId) return
-          await delay(5000)
+          // await delay(5000)
           const res = await fetch(
             `https://omdbapi.com?apikey=7035c60c&i=${movieId}`
           )
