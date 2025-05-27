@@ -3,6 +3,7 @@ import Home from '@/routes/pages/Home'
 import About from '@/routes/pages/About'
 import Movies from '@/routes/pages/Movies'
 import MovieDetails from '@/routes/pages/MovieDetails'
+import Todos from '@/routes/pages/Todos'
 import DefaultLayout from '@/routes/layouts/Default'
 
 const router = createBrowserRouter([
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/todos',
-        element: ''
+        element: <Todos />
       }
     ]
   }

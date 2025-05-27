@@ -15,22 +15,49 @@ export interface Todo {
 export const useTodoStore = create(
   combine(
     {
-      todos: [] as Todos
+      todos: [] as Todos,
+      isLoading: false
     },
-    set => ({
+    (set, get) => ({
       fetchTodos: async () => {
         // Axios
         const { data: todos = [] } = await axios({
-          url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos'
+          url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
+          headers: {
+            'content-type': 'application/json',
+            apikey: 'KDT8_bcAWVpD8',
+            username: 'KDT8_ParkYoungWoong'
+          }
         })
         set({ todos })
+      },
+      createTodo: async (title: string) => {
+        const { todos, isLoading } = get()
+        if (isLoading) return
+        if (!title.trim()) return
+        set({ isLoading: true })
+        const { data: createdTodo } = await axios({
+          url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            apikey: 'KDT8_bcAWVpD8',
+            username: 'KDT8_ParkYoungWoong'
+          },
+          data: {
+            title
+          }
+        })
+
+        set({
+          todos: [createdTodo, ...todos],
+          isLoading: false
+        })
       }
     })
   )
 )
 
-// const a = (x: number) => x + 1
-
-// function a(x: number) {
-//   return x + 1
-// }
+// const arr = [1, 2, 3]
+// const newArr = [7, ...arr]
+// [7,1,2,3]
