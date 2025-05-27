@@ -51,7 +51,8 @@ export const useMovieStore = create(
     {
       searchText: '',
       movies: [] as Movie[],
-      currentMovie: null as MovieDetails | null
+      currentMovie: null as MovieDetails | null,
+      isLoading: false
     },
     (set, get) => {
       return {

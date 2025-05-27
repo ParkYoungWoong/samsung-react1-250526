@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useMovieStore } from '@/stores/movie'
 
@@ -6,11 +6,17 @@ export default function MovieDetails() {
   const { movieId } = useParams()
   const fetchMovieDetails = useMovieStore(state => state.fetchMovieDetails)
   const currentMovie = useMovieStore(state => state.currentMovie)
+  const [isLoading, setIsLoading] = useState(true)
 
   // useEffect(실행할함수, 의존성배열)
   useEffect(() => {
-    fetchMovieDetails(movieId)
+    init()
   }, [movieId])
+
+  async function init() {
+    await fetchMovieDetails(movieId)
+    setIsLoading(false)
+  }
 
   return (
     <>
@@ -26,7 +32,16 @@ export default function MovieDetails() {
           <div>
             <h1 className="text-[60px] font-bold">{currentMovie.Title}</h1>
             <p>{currentMovie.Plot}</p>
-            MovieInfo
+            <MovieInfo title="Ratings">
+              {currentMovie.Ratings.map(rating => (
+                <div key={rating.Source}>
+                  {rating.Source} - {rating.Value}
+                </div>
+              ))}
+            </MovieInfo>
+            <MovieInfo title="Actors">{currentMovie.Actors}</MovieInfo>
+            <MovieInfo title="Director">{currentMovie.Director}</MovieInfo>
+            <MovieInfo title="Genre">{currentMovie.Genre}</MovieInfo>
           </div>
         </div>
       )}
@@ -34,6 +49,17 @@ export default function MovieDetails() {
   )
 }
 
-function MovieInfo({ title, children }) {
-  return <></>
+function MovieInfo({
+  title,
+  children
+}: {
+  title: string
+  children?: React.ReactNode
+}) {
+  return (
+    <div className="mt-[20px]">
+      <h3 className="text-[20px] font-bold">{title}</h3>
+      {children}
+    </div>
+  )
 }
