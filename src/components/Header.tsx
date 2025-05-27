@@ -11,6 +11,7 @@ export default function Header() {
     <header className="flex gap-[10px]">
       {navigations.map(nav => (
         <NavLink
+          key={nav.to}
           to={nav.to}
           className={({ isActive }) => (isActive ? 'text-red-500' : '')}>
           {nav.label}

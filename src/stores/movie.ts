@@ -13,12 +13,45 @@ export interface Movie {
   Type: string
   Poster: string
 }
+// https://transform.tools/json-to-typescript
+export interface MovieDetails {
+  Title: string
+  Year: string
+  Rated: string
+  Released: string
+  Runtime: string
+  Genre: string
+  Director: string
+  Writer: string
+  Actors: string
+  Plot: string
+  Language: string
+  Country: string
+  Awards: string
+  Poster: string
+  Ratings: Rating[]
+  Metascore: string
+  imdbRating: string
+  imdbVotes: string
+  imdbID: string
+  Type: string
+  DVD: string
+  BoxOffice: string
+  Production: string
+  Website: string
+  Response: string
+}
+export interface Rating {
+  Source: string
+  Value: string
+}
 
 export const useMovieStore = create(
   combine(
     {
       searchText: '',
-      movies: [] as Movie[]
+      movies: [] as Movie[],
+      currentMovie: null as MovieDetails | null
     },
     (set, get) => {
       return {
@@ -43,7 +76,9 @@ export const useMovieStore = create(
             `https://omdbapi.com?apikey=7035c60c&i=${movieId}`
           )
           const movie = await res.json()
-          console.log(movie)
+          set({
+            currentMovie: movie
+          })
         }
       }
     }
