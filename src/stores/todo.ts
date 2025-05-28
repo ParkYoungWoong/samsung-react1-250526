@@ -27,7 +27,8 @@ export const useTodoStore = create(
     {
       todos: [] as Todos,
       isLoading: false,
-      isLoadingForDelete: false
+      isLoadingForDelete: false,
+      message: ''
     },
     (set, get) => {
       async function fetchTodos() {
@@ -62,9 +63,17 @@ export const useTodoStore = create(
         const { isLoadingForDelete } = get()
         if (isLoadingForDelete) return
         set({ isLoadingForDelete: true })
-        await requestTodo.delete(`/${todo.id}`)
-        await fetchTodos()
-        set({ isLoadingForDelete: false })
+        try {
+          await requestTodo.delete(`/${todo.id}`)
+          await fetchTodos()
+        } catch (error: unknown) {
+          set({
+            message:
+              error instanceof Error ? error.message : '에러가 발생했어요.'
+          })
+        } finally {
+          set({ isLoadingForDelete: false })
+        }
       }
 
       return {
