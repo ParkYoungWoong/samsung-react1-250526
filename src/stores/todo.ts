@@ -15,6 +15,7 @@ export interface Todo {
 const requestTodo = axios.create({
   baseURL: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
   headers: {
+    'Cache-Control': 'no-store',
     'content-type': 'application/json',
     apikey: 'KDT8_bcAWVpD8',
     username: 'KDT8_ParkYoungWoong'
@@ -25,7 +26,8 @@ export const useTodoStore = create(
   combine(
     {
       todos: [] as Todos,
-      isLoading: false
+      isLoading: false,
+      isLoadingForDelete: false
     },
     (set, get) => {
       async function fetchTodos() {
@@ -56,11 +58,20 @@ export const useTodoStore = create(
         await fetchTodos()
         set({ isLoading: false })
       }
+      async function deleteTodo(todo: Todo) {
+        const { isLoadingForDelete } = get()
+        if (isLoadingForDelete) return
+        set({ isLoadingForDelete: true })
+        await requestTodo.delete(`/${todo.id}`)
+        await fetchTodos()
+        set({ isLoadingForDelete: false })
+      }
 
       return {
         fetchTodos,
         createTodo,
-        updateTodo
+        updateTodo,
+        deleteTodo
       }
     }
   )

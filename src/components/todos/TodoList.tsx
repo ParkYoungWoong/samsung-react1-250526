@@ -8,6 +8,7 @@ export default function TodoList() {
 
   useEffect(() => {
     init()
+    // eslint-disable-next-line
   }, [])
 
   async function init() {

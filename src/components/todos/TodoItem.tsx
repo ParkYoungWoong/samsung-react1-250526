@@ -10,6 +10,8 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const updateTodo = useTodoStore(state => state.updateTodo)
   const isLoading = useTodoStore(state => state.isLoading)
+  const deleteTodo = useTodoStore(state => state.deleteTodo)
+  const isLoadingForDelete = useTodoStore(state => state.isLoadingForDelete)
 
   // useEffect(실행할함수, 의존성배열)
   useEffect(() => {
@@ -18,21 +20,22 @@ export default function TodoItem({ todo }: { todo: Todo }) {
     }
   }, [isEditing])
 
-  useEffect(() => {
-    console.log(todo)
-  }, [todo])
-
   async function handleSave() {
     if (title === todo.title) return
     await updateTodo({
       ...todo,
       title
     })
-    setIsEditing(false)
+    handleCancel(title)
+    // setIsEditing(false)
+    // console.log('todo:title', todo.title)
   }
-  function handleCancel() {
+  function handleDelete() {
+    deleteTodo(todo)
+  }
+  function handleCancel(title: string = todo.title) {
     setIsEditing(false)
-    setTitle(todo.title)
+    setTitle(title)
   }
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.nativeEvent.isComposing) return
@@ -62,8 +65,9 @@ export default function TodoItem({ todo }: { todo: Todo }) {
             저장
           </Button>
           <Button
+            loading={isLoadingForDelete}
             color="danger"
-            onClick={() => {}}>
+            onClick={handleDelete}>
             삭제
           </Button>
         </div>
