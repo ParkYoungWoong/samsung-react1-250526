@@ -12,53 +12,52 @@ export interface Todo {
   updatedAt: string // 할 일 수정일
 }
 
+const requestTodo = axios.create({
+  baseURL: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
+  headers: {
+    'content-type': 'application/json',
+    apikey: 'KDT8_bcAWVpD8',
+    username: 'KDT8_ParkYoungWoong'
+  }
+})
+
 export const useTodoStore = create(
   combine(
     {
       todos: [] as Todos,
       isLoading: false
     },
-    (set, get) => ({
-      fetchTodos: async () => {
-        // Axios
-        const { data: todos = [] } = await axios({
-          url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
-          headers: {
-            'content-type': 'application/json',
-            apikey: 'KDT8_bcAWVpD8',
-            username: 'KDT8_ParkYoungWoong'
-          }
-        })
+    (set, get) => {
+      async function fetchTodos() {
+        const { data: todos = [] } = await requestTodo.get('/')
         set({ todos })
-      },
-      createTodo: async (title: string) => {
+      }
+      async function createTodo(title: string) {
         const { todos, isLoading } = get()
         if (isLoading) return
         if (!title.trim()) return
         set({ isLoading: true })
         await new Promise(resolve => setTimeout(resolve, 3000))
-        const { data: createdTodo } = await axios({
-          url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-            apikey: 'KDT8_bcAWVpD8',
-            username: 'KDT8_ParkYoungWoong'
-          },
-          data: {
-            title
-          }
-        })
+        const { data: createdTodo } = await requestTodo.post('/', { title })
 
         set({
           todos: [createdTodo, ...todos],
           isLoading: false
         })
       }
-    })
+      async function updateTodo(todo: Todo) {
+        await requestTodo.put(`/${todo.id}`, {
+          title: todo.title,
+          done: todo.done
+        })
+        await fetchTodos()
+      }
+
+      return {
+        fetchTodos,
+        createTodo,
+        updateTodo
+      }
+    }
   )
 )
-
-// const arr = [1, 2, 3]
-// const newArr = [7, ...arr]
-// [7,1,2,3]

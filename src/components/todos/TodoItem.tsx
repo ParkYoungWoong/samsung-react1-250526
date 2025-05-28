@@ -2,16 +2,28 @@ import { useState, useRef, useEffect } from 'react'
 import type { Todo } from '@/stores/todo'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
+import { useTodoStore } from '@/stores/todo'
 
 export default function TodoItem({ todo }: { todo: Todo }) {
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState(todo.title)
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const updateTodo = useTodoStore(state => state.updateTodo)
 
   // useEffect(실행할함수, 의존성배열)
-  useEffect(() => {}, [isEditing])
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus()
+    }
+  }, [isEditing])
 
-  function handleSave() {}
+  function handleSave() {
+    if (title == )
+    updateTodo({
+      ...todo,
+      title
+    })
+  }
   function handleCancel() {
     setIsEditing(false)
     setTitle(todo.title)
@@ -61,3 +73,9 @@ export default function TodoItem({ todo }: { todo: Todo }) {
     </li>
   )
 }
+
+
+
+
+// console.log(1 === '1') // false
+// console.log(1 == '1') // true
