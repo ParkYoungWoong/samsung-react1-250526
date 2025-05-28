@@ -1,40 +1,17 @@
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  color: 'primary' | 'secondary' | 'danger'
+  ref?: React.RefObject<HTMLInputElement | null>
+  color?: 'primary' | 'secondary' | 'danger'
 }
-// type Props = React.InputHTMLAttributes<HTMLInputElement> &
-//   React.FormHTMLAttributes<HTMLFormElement>
 
-export default function Input({ color, ...restProps }: Props) {
+export default function Input({ ref, color, ...restProps }: Props) {
+  console.log(color)
   return (
-    <form>
-      <input {...restProps} />
-    </form>
+    <>
+      <input
+        {...restProps}
+        ref={ref}
+        className="h-[30px] rounded-md border-2 border-gray-300 px-2 duration-200 outline-none focus:border-blue-500"
+      />
+    </>
   )
 }
-
-// interface A {
-//   color: number
-// }
-// interface B {
-//   inputAttrs: number
-// }
-
-// const ab: A & B = {
-//   color: 1,
-//   inputAttrs: 2
-// }
-
-// const obj = {
-//   a: 1,
-//   b: 2,
-//   c: 3
-// }
-
-// const { a, ...rest } = obj
-// console.log(a) // 1
-// console.log(rest) // { b: 2, c: 3 }
-
-// const nums = [1, 2, 3, 4, 5]
-// const [a, ...xyz] = nums
-// console.log(b) // 2
-// console.log(xyz) // [2, 3, 4, 5]
