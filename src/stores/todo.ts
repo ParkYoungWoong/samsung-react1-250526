@@ -36,6 +36,7 @@ export const useTodoStore = create(
         if (isLoading) return
         if (!title.trim()) return
         set({ isLoading: true })
+        await new Promise(resolve => setTimeout(resolve, 3000))
         const { data: createdTodo } = await axios({
           url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
           method: 'POST',
