@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import type { Todo } from '@/stores/todo'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
@@ -8,8 +8,8 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   const [title, setTitle] = useState(todo.title)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  // const el = document.querySelector('input')
-  // console.log()
+  // useEffect(실행할함수, 의존성배열)
+  useEffect(() => {}, [isEditing])
 
   function handleSave() {}
   function handleCancel() {
