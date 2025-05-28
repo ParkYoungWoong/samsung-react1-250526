@@ -39,7 +39,7 @@ export default function TodoCreator() {
       <Button
         loading={isLoading}
         onClick={() => handleCreateTodo()}>
-        추가
+        추가하기
       </Button>
     </div>
   )
