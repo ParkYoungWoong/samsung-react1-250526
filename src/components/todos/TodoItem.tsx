@@ -9,6 +9,7 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   const [title, setTitle] = useState(todo.title)
   const inputRef = useRef<HTMLInputElement | null>(null)
   const updateTodo = useTodoStore(state => state.updateTodo)
+  const isLoading = useTodoStore(state => state.isLoading)
 
   // useEffect(실행할함수, 의존성배열)
   useEffect(() => {
@@ -17,12 +18,17 @@ export default function TodoItem({ todo }: { todo: Todo }) {
     }
   }, [isEditing])
 
-  function handleSave() {
-    if (title == )
-    updateTodo({
+  useEffect(() => {
+    console.log(todo)
+  }, [todo])
+
+  async function handleSave() {
+    if (title === todo.title) return
+    await updateTodo({
       ...todo,
       title
     })
+    setIsEditing(false)
   }
   function handleCancel() {
     setIsEditing(false)
@@ -41,7 +47,7 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   return (
     <li>
       {isEditing ? (
-        <div>
+        <div className="align-center flex gap-1">
           <Input
             ref={inputRef}
             value={title}
@@ -50,8 +56,9 @@ export default function TodoItem({ todo }: { todo: Todo }) {
           />
           <Button onClick={handleCancel}>취소</Button>
           <Button
+            loading={isLoading}
             color="primary"
-            onClick={() => {}}>
+            onClick={handleSave}>
             저장
           </Button>
           <Button
@@ -73,9 +80,6 @@ export default function TodoItem({ todo }: { todo: Todo }) {
     </li>
   )
 }
-
-
-
 
 // console.log(1 === '1') // false
 // console.log(1 == '1') // true

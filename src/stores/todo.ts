@@ -46,11 +46,15 @@ export const useTodoStore = create(
         })
       }
       async function updateTodo(todo: Todo) {
+        const { isLoading } = get()
+        if (isLoading) return
+        set({ isLoading: true })
         await requestTodo.put(`/${todo.id}`, {
           title: todo.title,
           done: todo.done
         })
         await fetchTodos()
+        set({ isLoading: false })
       }
 
       return {
